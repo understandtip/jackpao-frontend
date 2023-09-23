@@ -4,8 +4,8 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const myAxios: AxiosInstance = axios.create({
     // baseURL:isDev ? 'http://localhost:8010/api' : 'http://47.120.11.50:8010/api',
-    baseURL: 'http://localhost:8010/api',
-    // baseURL: 'http://47.120.11.50:8010/api',
+    // baseURL: 'http://localhost:8010/api',
+    baseURL: 'http://47.120.11.50:8010/api',
 });
 
 myAxios.defaults.withCredentials = true; // 配置为true
