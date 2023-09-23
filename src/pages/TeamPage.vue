@@ -1,14 +1,16 @@
 <template>
   <div id="teamPage">
-    <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch" />
+    <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch"/>
     <van-tabs v-model:active="active" @change="onTabChange">
       <van-tab title="公开" name="public" />
       <van-tab title="加密" name="private" />
     </van-tabs>
+    <team-card-list :teamList="teamList" :loading="loading"/> 
     <div style="margin-bottom: 16px" />
-    <van-button class="add-button" type="primary" icon="plus" @click="toAddTeam" />
-    <team-card-list :teamList="teamList" />
-    <van-empty v-if="teamList?.length < 1" description="数据为空"/>
+    <van-button block class="add-button" type="primary" icon="plus" @click="toAddTeam" />
+    <van-empty v-if="!teamList || teamList.length < 1" description="数据为空">
+      <!-- <van-loading type="spinner" size="40" color="#0094ff" /> -->
+    </van-empty>
   </div>
 </template>
 
@@ -23,6 +25,7 @@ import {Toast} from "vant";
 const active = ref('public')
 const router = useRouter();
 const searchText = ref('');
+const loading = ref(true);
 
 /**
  * 切换查询状态
@@ -54,6 +57,7 @@ const teamList = ref([]);
  * @returns {Promise<void>}
  */
 const listTeam = async (val = '', status = 0) => {
+  loading.value = true;
   const res = await myAxios.get("/team/list", {
     params: {
       searchText: val,
@@ -66,6 +70,7 @@ const listTeam = async (val = '', status = 0) => {
   } else {
     Toast.fail('加载队伍失败，请刷新重试');
   }
+  loading.value = false;
 }
 
 // 页面加载时只触发一次
@@ -76,6 +81,8 @@ onMounted( () => {
 const onSearch = (val) => {
   listTeam(val);
 };
+
+
 
 </script>
 

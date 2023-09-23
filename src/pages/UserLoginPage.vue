@@ -1,4 +1,8 @@
 <template>
+  <van-nav-bar
+      :title="title"
+  >
+  </van-nav-bar>
   <van-form @submit="onSubmit">
     <van-cell-group inset>
       <van-field
@@ -30,10 +34,12 @@ import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {Toast} from "vant";
+import routes from "../config/route";
 
 const router = useRouter();
 const route = useRoute();
-
+const DEFAULT_TITLE = '伙伴匹配';
+const title = ref(DEFAULT_TITLE);
 const userAccount = ref('');
 const userPassword = ref('');
 
@@ -52,6 +58,17 @@ const onSubmit = async () => {
     Toast.fail('登录失败');
   }
 };
+
+/**
+ * 根据路由切换标题
+ */
+ router.beforeEach((to, from) => {
+  const toPath = to.path;
+  const route = routes.find((route) => {
+    return toPath == route.path;
+  })
+  title.value = route?.title ?? DEFAULT_TITLE;
+})
 
 </script>
 

@@ -1,29 +1,26 @@
 <template>
-  <div
-      id="teamCardList"
-  >
+  <van-skeleton id="teamCardList" title avatar :row="3" :loading="loading" v-for="team in props.teamList">
     <van-card
-        v-for="team in props.teamList"
         :thumb="ikun"
         :desc="team.description"
         :title="`${team.name}`"
     >
       <template #tags>
-        <van-tag plain type="danger" style="margin-right: 8px; margin-top: 8px">
-          {{
-            teamStatusEnum[team.status]
-          }}
+        <van-tag plain type="danger" style="margin-right: 8px; margin-top: 10px">
+          {{ teamStatusEnum[team.status] }}
         </van-tag>
       </template>
       <template #bottom>
-        <div>
-          {{ `队伍人数: ${team.hasJoinNum}/${team.maxNum}` }}
+        <!-- <div>
+          <van-progress :pivot-text="Math.round(team.hasJoinNum * 100/ team.maxNum) + '%'" stroke-width="2px" color="#f2826a" :percentage="team.hasJoinNum * 100/ team.maxNum" />
         </div>
+        <br/> -->
+        {{ `队伍人数: ${team.hasJoinNum}/${team.maxNum}` }}
         <div v-if="team.expireTime">
-          {{ '过期时间: ' + team.expireTime }}
+          {{ '过期时间: ' + (moment(team.expireTime).format('YYYY-MM-DD'))}}
         </div>
-        <div>
-          {{ '创建时间: ' + team.createTime }}
+        <div v-if="team.createTime">
+          {{ '创建时间: ' + (moment(team.createTime).format('YYYY-MM-DD'))}}
         </div>
       </template>
       <template #footer>
@@ -46,8 +43,7 @@
     <van-dialog v-model:show="showPasswordDialog" title="请输入密码" show-cancel-button @confirm="doJoinTeam" @cancel="doJoinCancel">
       <van-field v-model="password" placeholder="请输入密码"/>
     </van-dialog>
-  </div>
-
+  </van-skeleton>
 </template>
 
 <script setup lang="ts">
@@ -55,16 +51,21 @@ import {TeamType} from "../models/team";
 import {teamStatusEnum} from "../constants/team";
 import ikun from '../assets/ikun.png';
 import myAxios from "../plugins/myAxios";
-import {Dialog, Toast} from "vant";
+import {Dialog, Loading, Toast} from "vant";
 import {onMounted, ref} from "vue";
 import {getCurrentUser} from "../services/user";
 import {useRouter} from "vue-router";
+import moment from 'moment';
+import TeamPage from "/src/pages/TeamPage.vue";
+import { loadavg } from "os";
 
 interface TeamCardListProps {
+  loading: boolean;
   teamList: TeamType[];
 }
 
 const props = withDefaults(defineProps<TeamCardListProps>(), {
+  loading: true,
   // @ts-ignore
   teamList: [] as TeamType[],
 });
@@ -79,6 +80,8 @@ const router = useRouter();
 onMounted(async () => {
   currentUser.value = await getCurrentUser();
 })
+
+
 
 const preJoinTeam = (team: TeamType) => {
   joinTeamId.value = team.id;
@@ -161,6 +164,7 @@ const doDeleteTeam = async (id: number) => {
 <style scoped>
 #teamCardList :deep(.van-image__img) {
   height: 128px;
+  width: 90px;
   object-fit: unset;
 }
 </style>

@@ -22,7 +22,7 @@
             readonly
             name="datetimePicker"
             label="过期时间"
-            :placeholder="addTeamData.expireTime ?? '点击选择过期时间'"
+            :placeholder="addTeamData.expireTime ? (moment(addTeamData.expireTime).format('YYYY-MM-DD HH:mm:ss')) : '点击选择过期时间'"
             @click="showPicker = true"
         />
         <van-popup v-model:show="showPicker" position="bottom">
@@ -68,6 +68,7 @@ import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {Toast} from "vant";
+import moment from 'moment';
 
 const router = useRouter();
 const route = useRoute();

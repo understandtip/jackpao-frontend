@@ -22,7 +22,7 @@
             readonly
             name="datetimePicker"
             label="过期时间"
-            :placeholder="addTeamData.expireTime ?? '点击选择过期时间'"
+            :placeholder="addTeamData.expireTime ? (moment(addTeamData.expireTime).format('YYYY-MM-DD HH:mm:ss')) : '点击选择过期时间'"
             @click="showPicker = true"
         />
         <van-popup v-model:show="showPicker" position="bottom">
@@ -73,6 +73,7 @@ import {useRouter} from "vue-router";
 import {ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {Toast} from "vant";
+import moment from 'moment';
 
 const router = useRouter();
 // 展示日期选择器
@@ -100,14 +101,14 @@ const onSubmit = async () => {
   }
   // todo 前端参数校验
   const res = await myAxios.post("/team/add", postData);
-  if (res?.code === 0 && res.data){
+  if (res?.code == 0 && res.data){
     Toast.success('添加成功');
     router.push({
       path: '/team',
       replace: true,
     });
   } else {
-    Toast.success('添加失败');
+    Toast.fail('添加失败,'+ res?.description);
   }
 }
 </script>

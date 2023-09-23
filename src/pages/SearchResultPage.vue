@@ -1,22 +1,25 @@
 <template>
-  <user-card-list :user-list="userList" />
-  <van-empty v-if="!userList || userList.length < 1" description="搜索结果为空" />
+  <user-card-list :user-list="userList" :loading="loading"/>
+  <van-empty v-if="!userList || userList.length < 1" description="加载中">
+    <van-loading type="spinner" size="40" color="#0094ff" />
+  </van-empty>
 </template>
 
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
 import {useRoute} from "vue-router";
 import myAxios from "../plugins/myAxios";
-import {Toast} from "vant";
+import {Loading, Toast} from "vant";
 import qs from 'qs';
 import UserCardList from "../components/UserCardList.vue";
 
 const route = useRoute();
 const {tags} = route.query;
-
+const loading = ref(true);
 const userList = ref([]);
 
 onMounted(async () => {
+  loading.value = true;
   const userListData = await myAxios.get('/user/search/tags', {
     params: {
       tagNameList: tags
@@ -42,6 +45,7 @@ onMounted(async () => {
     })
     userList.value = userListData;
   }
+  loading.value = false;
 })
 
 

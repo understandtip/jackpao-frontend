@@ -1,7 +1,7 @@
 <template>
   <div id="teamPage">
     <van-search v-model="searchText" placeholder="搜索队伍" @search="onSearch" />
-    <team-card-list :teamList="teamList" />
+    <team-card-list :teamList="teamList" :loading="loading"/>
     <van-empty v-if="teamList?.length < 1" description="数据为空"/>
   </div>
 </template>
@@ -18,17 +18,18 @@ const router = useRouter();
 const searchText = ref('');
 
 const teamList = ref([]);
-
+const loading = ref(true);
 /**
  * 搜索队伍
  * @param val
  * @returns {Promise<void>}
  */
 const listTeam = async (val = '') => {
+  loading.value = true;
   const res = await myAxios.get("/team/list/my/join", {
     params: {
       searchText: val,
-      pageNum: 1,
+      pageNum: 10,
     },
   });
   if (res?.code === 0) {
@@ -36,6 +37,7 @@ const listTeam = async (val = '') => {
   } else {
     Toast.fail('加载队伍失败，请刷新重试');
   }
+  loading.value = false;
 }
 
 

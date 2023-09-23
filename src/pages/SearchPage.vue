@@ -36,24 +36,65 @@ const router = useRouter()
 
 const searchText = ref('');
 
-const originTagList = [{
-  text: '性别',
-  children: [
-    {text: '男', id: '男'},
-    {text: '女', id: '女'},
-  ],
-},
+const originTagList = [
   {
-    text: '年级',
+    text: '性别',
     children: [
-      {text: '大一', id: '大一'},
-      {text: '大二', id: '大二'},
-      {text: '大3', id: '大3'},
-      {text: '大4', id: '大4'},
-      {text: '大5', id: '大5aaaaaaa'},
-      {text: '大6', id: '大6aaaaaaa'},
+      {text: '男', id: '男'},
+      {text: '女', id: '女'},
     ],
   },
+  {
+    text: '方向',
+    children: [
+      {text: '后端', id: '后端'},
+      {text: 'Java', id: 'Java'},
+      {text: '前端', id: '前端'},
+      {text: 'GO', id: 'GO'},
+      {text: 'C++', id: 'C++'}
+    ],
+  },
+  {
+    text: '目标',
+    children: [
+      {text: '考研', id: '考研'},
+      {text: '春招', id: '春招'},
+      {text: '秋招', id: '秋招'},
+      {text: '社招', id: '社招'},
+      {text: '考公', id: '考公'},
+      {text: '竞赛', id: '竞赛'},
+      {text: '转行', id: '转行'},
+      {text: '跳槽', id: '跳槽'}
+    ],
+  },
+  {
+    text: '身份',
+    children: [
+      {text: '小学', id: '小学'},
+      {text: '初中', id: '初中'},
+      {text: '高中', id: '高中'},
+      {text: '大一', id: '大一'},
+      {text: '大二', id: '大二'},
+      {text: '大三', id: '大三'},
+      {text: '大四', id: '大四'},
+      {text: '学生', id: '学生'},
+      {text: '待业', id: '待业'},
+      {text: '已就业', id: '已就业'},
+      {text: '研一', id: '研一'},
+      {text: '研二', id: '研二'},
+      {text: '研三', id: '研三'}
+    ],
+  },
+  {
+    text: '状态',
+    children: [
+      {text: '乐观', id: '乐观'},
+      {text: '悲观', id: '悲观'},
+      {text: '单身', id: '单身'},
+      {text: '已婚', id: '已婚'},
+      {text: '有对象', id: '有对象'}
+    ],
+  }
 ]
 
 // 标签列表

@@ -1,11 +1,11 @@
 <template>
   <van-form @submit="onSubmit">
-      <van-field
-          v-model="editUser.currentValue"
-          :name="editUser.editKey"
-          :label="editUser.editName"
-          :placeholder="`请输入${editUser.editName}`"
-      />
+    <van-field
+        v-model="editUser.currentValue"
+        :name="editUser.editKey"
+        :label="editUser.editName"
+        :placeholder="`请输入${editUser.editName}`"
+    />
     <div style="margin: 16px;">
       <van-button round block type="primary" native-type="submit">
         提交

@@ -5,11 +5,20 @@
     <van-cell title="头像" is-link to="/user/edit">
       <img style="height: 48px" :src="user.avatarUrl"/>
     </van-cell>
-    <van-cell title="性别" is-link :value="user.gender" @click="toEdit('gender', '性别', user.gender)"/>
+    <van-cell title="性别" is-link :value="user.gender === 1 ? '男' : '女'" @click="toEdit('gender', '性别', user.gender)"/>
     <van-cell title="电话" is-link to="/user/edit" :value="user.phone" @click="toEdit('phone', '电话', user.phone)"/>
     <van-cell title="邮箱" is-link to="/user/edit" :value="user.email" @click="toEdit('email', '邮箱', user.email)"/>
+    <van-cell title="标签" is-link to="/user/edit" :value="user.tags" @click="toEdit('tags', '标签', user.tags)">
+      <!-- todo -->
+      <!-- <van-tag plain type="primary" v-for="tag in (user.tags).slice(1,-1).split(',')" style="margin-right: 8px; margin-top: 8px">
+          {{ tag.slice(1,-1) }}
+      </van-tag> -->
+      <van-tag plain type="danger" v-for="tag in JSON.parse(user.tags)" style="margin-right: 8px; margin-top: 8px">
+          {{ tag }}
+      </van-tag>
+    </van-cell>
     <van-cell title="星球编号" :value="user.planetCode"/>
-    <van-cell title="注册时间" :value="user.createTime"/>
+    <van-cell title="注册时间" :value="moment(user.createTime).format('YYYY-MM-DD')"/>
   </template>
 </template>
 
@@ -19,6 +28,7 @@ import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {Toast} from "vant";
 import {getCurrentUser} from "../services/user";
+import moment from 'moment';
 
 // const user = {
 //   id: 1,
